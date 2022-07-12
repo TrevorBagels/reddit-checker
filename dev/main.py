@@ -1,8 +1,9 @@
 #this program requires python 3.9+
 
+
 from .prodict import Prodict
 from . import utils
-import os, requests, time, urllib
+import os, requests, time, urllib.parse
 
 class Config(Prodict):
 	#client_id:	str	
@@ -100,6 +101,7 @@ class Result(Prodict):
 		self.total_comments_exceeds = False
 
 
+
 class Main:
 	def __init__(self, conf="config.json"):
 		self.config_file = conf
@@ -110,7 +112,7 @@ class Main:
 		pass
 	
 
-	def get_user_subreddit_data(self, username:str, sr_list:list[str], max_results=150):
+	def get_user_subreddit_data(self, username:str, sr_list:list[str], max_results=150, on_result=None): #on_result is a function called after a result is found.
 		max_results = self.cfg.max_results
 		posts = []
 		comments = []
@@ -118,20 +120,31 @@ class Main:
 		#for this function, we only index posts and comments restricted to the subreddits provided. good for looking into a user that uses reddit every minute and posts to an overwhelming number of subreddits.
 		for sr in sr_list:
 			params = {"author": username, "subreddit": sr, "size": max_results}
-			r_submissions = requests.get("https://api.pushshift.io/reddit/search/submission/?" + urllib.urlencode(params))
+			r_submissions = requests.get("https://api.pushshift.io/reddit/search/submission/?" + urllib.parse.urlencode(params))
 			time.sleep(self.cfg.request_delay)
-			r_comments = requests.get("https://api.pushshift.io/reddit/search/comment/?" + urllib.urlencode(params))
+			r_comments = requests.get("https://api.pushshift.io/reddit/search/comment/?" + urllib.parse.urlencode(params))
 			time.sleep(self.cfg.request_delay)
-			if r_submissions.status_code != 200 or r_comments.status_code != 200: #in case of error
+			if r_submissions.status_code == 429 or r_comments.status_code == 429:
+				time.sleep(2)
+				print("ratelimited!")
+				sr_list.append(sr) #since we're basically skipping this subreddit, add it to the end of sr_list so we try again.
+				continue
+			elif r_submissions.status_code != 200 or r_comments.status_code != 200: #in case of error
 				print("Something went wrong... (get user subreddit data requests)")
 				print(r_submissions.url, r_submissions.status_code, "\n- - -\n", r_comments.url, r_comments.status_code, "\n- - -\n", r_submissions.content, "\n\n", r_comments.content)
 			else:
+				#add posts/comments (prodict versions) to posts and comments lists.
 				for x in r_submissions.json()["data"]: posts.append(Post.from_dict(x))
 				for x in r_comments.json()["data"]: comments.append(Comment.from_dict(x))
-				r = Result(subreddi = sr, total_posts = len(r_submissions.json()["data"]), total_comments = len(r_comments.json()["data"]) )
+				#create result
+				r = Result(subreddit = sr, total_posts = len(r_submissions.json()["data"]), total_comments = len(r_comments.json()["data"]) )
+				#determine if there are more posts or comments than we were able to scan.
 				if r.total_posts >= max_results: r.total_posts_exceeds = True
 				if r.total_comments >= max_results: r.total_comments_exceeds = True
+				#save result, print it with on_result()
 				results.append(r)
+				if on_result != None: on_result(r)
+
 		return posts, comments, results
 	
 
