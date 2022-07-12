@@ -16,7 +16,7 @@ program goals:
 
 
 	example:
-`
+```
 		- /r/stims - 7 matches. (possible link to comment etc) 
 		- /r/cracksmokers - 3 matches.
-`
+```
