@@ -13,12 +13,13 @@ if __name__ == "__main__":
 	m = main.Main(conf=args.config)
 
 	def print_result(x:main.Result):
-		s = " - /r/" + x.subreddit
+		s = " - /r/" + x.subreddit + " - "
 		s += str( x.total_comments + x.total_posts )
 		if x.total_comments_exceeds or x.total_posts_exceeds: s += "+"
-		s += utils.pluralize("match", x.total_comments + x.total_posts, "matches", include_value=False)
-		s += "\n\t" + utils.pluralize(str(x.total_posts), int(x.total_posts_exceeds) + 1, str(x.total_posts) + "+", include_value=False) + utils.pluralize("post", x.total_posts, "posts", include_value=False)
-		s += "\n\t" + utils.pluralize(str(x.total_comments), int(x.total_comments_exceeds) + 1, str(x.total_comments) + "+", include_value=False) + utils.pluralize("comment", x.total_comments, "comments", include_value=False)
+		s += " " + utils.pluralize("match", x.total_comments + x.total_posts, "matches", include_value=False)
+		if x.total_comments + x.total_posts > 0:
+			s += "\n\t" + utils.pluralize(str(x.total_posts), int(x.total_posts_exceeds) + 1, str(x.total_posts) + "+", include_value=False) + " " + utils.pluralize("post", x.total_posts, "posts", include_value=False)
+			s += "\n\t" + utils.pluralize(str(x.total_comments), int(x.total_comments_exceeds) + 1, str(x.total_comments) + "+", include_value=False) + " " + utils.pluralize("comment", x.total_comments, "comments", include_value=False)
 		print(s)
 
 	data = m.get_user_subreddit_data(args.user, m.cfg.sr_list.split(" "), on_result=print_result)
