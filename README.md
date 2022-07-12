@@ -8,7 +8,6 @@ WIP
 
 program goals:
 
-
 	take a username as input
 
 	return reddit data from that username, including subreddits that the user has been active in
@@ -17,7 +16,7 @@ program goals:
 
 
 	example:
-```
+`
 		- /r/stims - 7 matches. (possible link to comment etc) 
 		- /r/cracksmokers - 3 matches.
-```
+`
