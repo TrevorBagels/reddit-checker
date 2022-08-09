@@ -5,18 +5,10 @@ yes
 WIP
 
 
+Usage:
 
-program goals:
+<div>
+	Run `python3 -m dev` to start the API server.
 
-	take a username as input
-
-	return reddit data from that username, including subreddits that the user has been active in
-
-	should state # of instances of each match it detects
-
-
-	example:
-```
-		- /r/stims - 7 matches. (possible link to comment etc) 
-		- /r/cracksmokers - 3 matches.
-```
+	Install jekyll and under `/site`, run `bundle exec jekyll serve --trace`
+</div>
