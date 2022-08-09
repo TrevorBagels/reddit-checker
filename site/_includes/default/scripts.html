@@ -1,0 +1,66 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+
+
+<script type='text/javascript' src="/assets/js/lib/jquery.min.js"></script>
+
+<script type='text/javascript' src="/assets/js/lib/math.min.js"></script>
+
+<script type='text/javascript' src="/assets/js/lib/js.cookie-2.2.1.min.js"></script>
+
+<script type='text/javascript' src="/assets/js/lib/rainbowvis.js"></script>
+
+<script type="text/javascript" src="/assets/js/lib/mark.min.js"></script>
+
+<script src="/assets/js/node_modules/spacetime/builds/spacetime.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0-beta2/css/all.css"/>
+
+
+
+
+
+
+
+<script>
+	baseURL = "{{site.data.config.baseURL }}"
+	console.log("Base API URL: " + baseURL)
+</script>
+
+
+<script>
+	String.prototype.hashCode = function(){
+		var hash = 0;
+		for (var i = 0; i < this.length; i++) {
+			var character = this.charCodeAt(i);
+			hash = ((hash<<5)-hash)+character;
+			hash = hash & hash; // Convert to 32bit integer
+		}
+		return hash;
+	}
+	function makehash(object){
+		return JSON.stringify(object).hashCode();
+	}
+</script>
+
+<script>
+	function updateCollapseables(){
+		var collapseables = document.getElementsByClassName("collapsebutton");
+		var i;
+		for (i = 0; i < collapseables.length; i++) {
+			collapseables[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var content = this.nextElementSibling;
+				if(content.style.display === "block") content.style.display = "none";
+				else content.style.display = "block";
+			});
+		}
+	}
+</script>

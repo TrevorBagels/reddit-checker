@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>{{ page.title }}</title>
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300&family=Roboto");
+		</style>
+		<link rel='stylesheet' href="/assets/css/styles.css">
+		<meta name="viewport" content="width=device-width,
+			initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		{% include default/scripts.html %}
+	</head>
+	<body>
+		<style>
+
+		</style>
+		<!--div id='content'-->
+			{{ content }}
+		<!--/div-->
+		
+	</body>
+
+	<script>
+		document.body.onload = function() {
+			auth = Cookies.get("auth") || "no"
+			$.get(baseURL + "/checkauth", {token: auth}, function(resp){
+			if(resp == "Unauthorized"){
+				window.location = "/login";
+			}
+		});
+		}
+		
+	</script>
+</html>

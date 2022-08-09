@@ -1,0 +1,181 @@
+#content
+	padding: 20px 20px 20px 20px !important
+	z-index: 1
+	p
+		font-size: 150%
+		margin: 2px 8px 2px 8px
+	
+		.half-size
+			font-size: 50%
+	
+	article
+		margin: 10px 24% 10px 24%
+	
+	h2
+		font-size: 210%
+		font-weight: 600
+
+
+.border
+	border: 3px solid $border
+	border-radius: 6px
+
+.red
+	color: red
+
+.green
+	color: green
+
+.redborder
+	border: 2px red solid
+	border-radius: 3px
+
+#results
+	width: 30%
+	div
+		padding-left: 20px
+		div
+			padding-left: 15px
+
+
+
+
+
+
+#config
+	display: block
+	border: 3px solid $border
+	border-radius: 6px
+	padding: 24px
+	width: 70%
+	margin: auto
+	.setting
+		height: 25px
+
+#locations
+	box-shadow: inset 0px 0px 5px 0px $border
+	display: block
+	border: 3px solid $border
+	border-radius: 6px
+	padding: 24px
+	width: 70%
+	margin: auto
+	.location
+		box-shadow: inset 0px 0px 2px 0px $border
+		display: block
+		border: 3px solid $border
+		border-radius: 6px
+		margin: auto
+		margin-top: 16px
+		padding: 8px 32px 8px 32px
+
+#extra-info-mobile
+	top: 0
+	position: fixed
+	width: 100%
+	min-height: 50px
+	background-color: $bgc
+	z-index: 100000
+	padding: 2px 9px 2px 9px
+	border-bottom-left-radius: 5px
+	border-bottom-right-radius: 5px
+	p
+		font-size: 1em
+		line-height: 1
+		font-weight: 600
+	i
+		padding-left: 24px
+		font-size: 1.7em
+		color: $navlink
+
+
+
+.filters
+	display: grid
+	grid-template-columns: auto auto
+	margin-top: 15px
+	div
+		box-shadow: none
+		margin: 10px 15px 5px 15px
+		div
+			box-shadow: none
+			background-color: $bgc2
+			height: 90%
+			div
+				box-shadow: none
+				height: 20px
+.addnew
+	margin: auto
+	display: block
+	color: $border
+button
+	font-family: "Aldrich", "Helvetica Neue", Helvetica, Arial, sans-serif
+	&:hover
+		box-shadow: inset 0px 0px 2px 0px $border
+button.negative
+	color: $negative !important
+	border-color: $negative !important
+	&:hover
+		box-shadow: inset 0px 0px 4px 1px $negative !important
+button.small
+	padding: 1px 9px
+	border-width: 1px
+table
+	font-family: "Jura", "Helvetica Neue", Helvetica, Arial, sans-serif
+	font-weight: 500
+.locationedit, #config
+	table
+		margin: 5px
+		width: 100%
+		margin: auto
+		cellspacing: 0
+		padding: 10px
+		border-radius: 6px
+		border: 3px solid $border
+		border-radius: 8px !important
+		border-collapse: collapse
+		tr:nth-child(odd)
+			background-color: $bgc2
+		tr
+			width: 100%
+			td
+				width: auto
+				input[type="text"]
+					width: 95% !important
+				div
+					width: 95% !important
+#filterexplain
+	display: block
+	margin: auto
+	width: 60%
+	margin-top: 60px !important
+.clickable
+	cursor: pointer
+	transition: .2s
+	&:hover
+		color: $linkhov
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip, .leaflet-tooltip
+	text-transform: uppercase
+	background-color: $bgc !important
+	color: $text !important
+	border: 1px solid $border !important
+	box-shadow: inset 1px 1px 5px -2px $border !important
+
+
+
+
+
+
+
+.leaflet-tile-container 
+	img
+		filter: brightness(.5)
+
+code, pre
+	background: rgba(0, 0, 0, 0) !important
+	box-shadow: inset 0 1px 10px rgba(39, 219, 134, .3), 0 1px 0 rgba(39, 219, 134, .15), 0 -1px 0 #21be7580
+pre
+	color: $text !important
+	font-size: 1em !important
+	border: 1px solid $border !important

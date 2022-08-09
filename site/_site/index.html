@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Home</title>
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300&family=Roboto");
+		</style>
+		<link rel='stylesheet' href="/assets/css/styles.css">
+		<meta name="viewport" content="width=device-width,
+			initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+
+
+<script type='text/javascript' src="/assets/js/lib/jquery.min.js"></script>
+
+<script type='text/javascript' src="/assets/js/lib/math.min.js"></script>
+
+<script type='text/javascript' src="/assets/js/lib/js.cookie-2.2.1.min.js"></script>
+
+<script type='text/javascript' src="/assets/js/lib/rainbowvis.js"></script>
+
+<script type="text/javascript" src="/assets/js/lib/mark.min.js"></script>
+
+<script src="/assets/js/node_modules/spacetime/builds/spacetime.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0-beta2/css/all.css"/>
+
+
+
+
+
+
+
+<script>
+	baseURL = "http://0.0.0.0:5001"
+	console.log("Base API URL: " + baseURL)
+</script>
+
+
+<script>
+	String.prototype.hashCode = function(){
+		var hash = 0;
+		for (var i = 0; i < this.length; i++) {
+			var character = this.charCodeAt(i);
+			hash = ((hash<<5)-hash)+character;
+			hash = hash & hash; // Convert to 32bit integer
+		}
+		return hash;
+	}
+	function makehash(object){
+		return JSON.stringify(object).hashCode();
+	}
+</script>
+
+<script>
+	function updateCollapseables(){
+		var collapseables = document.getElementsByClassName("collapsebutton");
+		var i;
+		for (i = 0; i < collapseables.length; i++) {
+			collapseables[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var content = this.nextElementSibling;
+				if(content.style.display === "block") content.style.display = "none";
+				else content.style.display = "block";
+			});
+		}
+	}
+</script>
+	</head>
+	<body>
+		<style>
+
+		</style>
+		<!--div id='content'-->
+			<style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@master/folium/templates/leaflet_heat.min.js"></script>
+<script src="https://ivansanchez.gitlab.io/Leaflet.Path.DashFlow/L.Path.DashFlow.js"></script>
+
+<div id="content">
+	<input type="text" id="username">
+	<button id="submitbutton" onclick="SubmitUser()">Check</button>
+
+	<h2>Results</h2>
+	<h3 id="user"></h3>
+	<!--input type="text" id="search">
+	<div id ="searchResults"></div-->
+	<div id="results">
+
+	</div>
+</div>
+
+
+<script async>
+
+	var postSearch = ""
+
+	function SubmitUser(){
+		var username = document.getElementById("username").value
+		document.getElementById("submitbutton").innerHTML = "<i>Running</i>"
+		document.getElementById("results").innerHTML = ""
+		document.getElementById("user").innerHTML = username
+		
+		$.get(baseURL + "/subredditlist", {token: Cookies.get("auth")}, function(subreddits){
+			//go through each subreddit
+			subreddits.forEach(sr => {
+				console.log(sr + "...")
+				$.ajax({async: false, type: 'GET', url:baseURL + "/subreddituserdata", data:{"username": username, "subreddit": sr, token: Cookies.get("auth")}, success: function(resp){
+					console.log(resp);
+					document.getElementById("results").innerHTML += resp.result_str + "<br>";
+					}
+				});
+
+			}); //end of foreach
+
+			console.log("DONE!")
+			document.getElementById("submitbutton").innerHTML = "Check"
+		});
+
+	}
+</script>
+		<!--/div-->
+		
+	</body>
+
+	<script>
+		document.body.onload = function() {
+			auth = Cookies.get("auth") || "no"
+			$.get(baseURL + "/checkauth", {token: auth}, function(resp){
+			if(resp == "Unauthorized"){
+				window.location = "/login";
+			}
+		});
+		}
+		
+	</script>
+</html>
