@@ -56,10 +56,15 @@ class Main:
 		if x.total_comments_exceeds or x.total_posts_exceeds: s += "+"
 		s += " " + utils.pluralize("match", x.total_comments + x.total_posts, "matches", include_value=False)
 		if x.total_comments + x.total_posts > 0:
-			s += "<br>" + utils.pluralize(str(x.total_posts), int(x.total_posts_exceeds) + 1, str(x.total_posts) + "+", include_value=False) + " " + utils.pluralize("post", x.total_posts, "posts", include_value=False)
-			s += "<br>" + utils.pluralize(str(x.total_comments), int(x.total_comments_exceeds) + 1, str(x.total_comments) + "+", include_value=False) + " " + utils.pluralize("comment", x.total_comments, "comments", include_value=False)
+			url = urllib.parse.quote(f"https://reddit.com/search/?q=author:{x.username} subreddit:{x.subreddit}") + "&type="
+			url = f"https://reddit.com/search/?q=author%3A{x.username}%20subreddit%3A{x.subreddit}&type="
+
+			s += "<br>" + f"<a target='_blank' href='{url}{'links'}'>" + utils.pluralize(str(x.total_posts), int(x.total_posts_exceeds) + 1, str(x.total_posts) + "+", include_value=False) + " " + utils.pluralize("post", x.total_posts, "posts", include_value=False) + "</a>"
+			s += "<br>" + f"<a target='_blank' href='{url}{'comment'}'>" + utils.pluralize(str(x.total_comments), int(x.total_comments_exceeds) + 1, str(x.total_comments) + "+", include_value=False) + " " + utils.pluralize("comment", x.total_comments, "comments", include_value=False) + "</a>"
 		s += "</div>"
 		if x.total_comments + x.total_posts > 0: s = "<div class='redborder'>" + s + "</div>"
+
+
 		else: s = "<div>" + s + "</div>"
 		return s
 
@@ -105,7 +110,7 @@ class Main:
 		
 		sr = self.users[username].subreddits[subreddit]
 		#create result
-		r = core.Result(subreddit = subreddit, total_posts = len(sr.posts), total_comments = len(sr.comments) )
+		r = core.Result(subreddit = subreddit, username = username, total_posts = len(sr.posts), total_comments = len(sr.comments) )
 		#determine if there are more posts or comments than we were able to scan.
 		if r.total_posts >= self.cfg.max_results: r.total_posts_exceeds = True
 		if r.total_comments >= self.cfg.max_results: r.total_comments_exceeds = True

@@ -91,6 +91,7 @@ class Post(Prodict):
 	locked:				bool
 
 class Result(Prodict):
+	username:		str
 	subreddit:		str
 	total_posts:			int
 	total_posts_exceeds:	bool #if number of posts is greater than max_results, which means that we weren't able to get an accurate summary of the results

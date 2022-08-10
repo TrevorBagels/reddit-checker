@@ -107,15 +107,49 @@
 
 <script async>
 
-	var postSearch = ""
-
+	var postSearch = "";
+	var ajaxCallIndex = 0;
+	var ajaxCallTarget = 0;
+	var subredditsList = []; //subreddits we are currently cycling through (using setInterval instead of forEach, to add a delay between each ajax call that allows for page rendering on chrome.)
+	var ajaxInterval = null;
+	var username = "";
 	function SubmitUser(){
-		var username = document.getElementById("username").value
-		document.getElementById("submitbutton").innerHTML = "<i>Running</i>"
-		document.getElementById("results").innerHTML = ""
-		document.getElementById("user").innerHTML = username
+		username = document.getElementById("username").value;
+		subredditsList = [];
+		ajaxCallIndex = 0;
+		ajaxCallTarget = 0;
+
+		document.getElementById("submitbutton").innerHTML = "<i>Running</i>";
+		document.getElementById("results").innerHTML = "";
+		document.getElementById("user").innerHTML = username;
 		
 		$.get(baseURL + "/subredditlist", {token: Cookies.get("auth")}, function(subreddits){
+			subredditsList = subreddits;
+			ajaxInterval = setInterval(function(){
+				if( ajaxCallIndex >= subredditsList.length) //once we finish the final ajax call, the index will be equal to the length of the array and the interval should stop.
+				{
+					console.log("DONE!");
+					document.getElementById("submitbutton").innerHTML = "Check";
+					clearInterval(ajaxInterval);
+					return;
+				}
+
+				if( ajaxCallIndex == ajaxCallTarget)
+				{
+					var sr = subredditsList[ajaxCallIndex]
+					ajaxCallTarget += 1;
+					$.ajax({async: false, type: 'GET', url:baseURL + "/subreddituserdata", data:{"username": username, "subreddit": sr, token: Cookies.get("auth")}, success: function(resp){
+						console.log(resp);
+						document.getElementById("results").innerHTML += resp.result_str + "<br>";
+						ajaxCallIndex += 1;
+						}
+					});
+				}
+
+				
+				
+			}, 100);
+			/*
 			//go through each subreddit
 			subreddits.forEach(sr => {
 				console.log(sr + "...")
@@ -126,9 +160,8 @@
 				});
 
 			}); //end of foreach
-
-			console.log("DONE!")
-			document.getElementById("submitbutton").innerHTML = "Check"
+			*/
+			
 		});
 
 	}
