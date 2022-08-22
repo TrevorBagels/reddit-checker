@@ -177,6 +177,7 @@ class SetPassword(Resource):
 		args = parser.parse_args()
 		if self.app.get_pwd_hash(args.original) == os.environ.get("pass"):
 			dotenv.set_key(".env", "pass", self.app.get_pwd_hash(args.new))
+			load_dotenv(override=True)
 			return "<b style='color:lightgreen;'>Password set.</b>"
 		else:
 			return "<b style='color:lightred;'>Unauthorized or invallid password</b>"
@@ -205,7 +206,7 @@ class GenerateToken(Resource):
 
 class FlaskAPI:
 	def __init__(self, main):
-		load_dotenv()
+		load_dotenv(override=True)
 		self.main = main
 		self.app = Flask(__name__)
 		self.app.config["SECRET_KEY"] = "0789QV0O-KPL,H297384TRUIOBFUWhIASLC7TYVOUgsid"
