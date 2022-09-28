@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 auth = HTTPBasicAuth()
 
 HOST = "0.0.0.0"
-PORT = "5001"
+PORT = "5002"
 AUTO = False
 
 
