@@ -229,6 +229,7 @@ class FlaskAPI:
 		kwargs = {"host": HOST, "port": PORT}
 		if AUTO:
 			kwargs = {}
+		kwargs["ssl_context"] = "adhoc"
 		#threading.Thread(target=self.app.run, kwargs=kwargs).start()
 		self.app.run(**kwargs)
 	
